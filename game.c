@@ -21,18 +21,14 @@ void mode_select(int value) {
     }
 }
 
-int invalid_input() {
-    bool invalid = true;
-    while (invalid) {
+int input_evaluate(char *input) {
+    while(!(sscanf(input, "%d", &parsed_value) == 1 && parsed_value < 3 && parsed_value > 0)) {
         printf("\nInvalid input. Try again\n");
         printf("Type the corresponding number: ");
         fgets(input, sizeof(input), stdin);
-
-        if (sscanf(input, "%d", &parsed_value) == 1 && parsed_value < 3) {
-            return parsed_value;
-        }
     }
-    return 0;
+    printf("Input: %d\n", parsed_value);
+    return parsed_value;
 }
 
 void play_game() {
@@ -42,9 +38,7 @@ void play_game() {
     printf("Type the corresponding number: ");
     fgets(input, sizeof(input), stdin);
 
-    if (!(sscanf(input, "%d", &parsed_value) == 1 && parsed_value < 3)) {
-        parsed_value = invalid_input();
-    }
+    parsed_value = input_evaluate(input);
 
     mode_select(parsed_value);
 }
