@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "game.c"
 
-int main() {
+int main(int argc, char* argv[]) {
 
     play_game();
 
