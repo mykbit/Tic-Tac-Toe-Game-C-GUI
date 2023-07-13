@@ -37,7 +37,9 @@ void play_game() {
 
     while (1) {
         fgets(input, sizeof(input), stdin);
-        if (sscanf(input, "%d", &parsed_value) == 1 && parsed_value >= 1 && parsed_value <= 3) {
+        char* endptr;
+        parsed_value = strtol(input, &endptr, 0);
+        if (endptr != input && *endptr == '\n' && parsed_value >= 1 && parsed_value <= 3) {
             break;
         }
         printf("\nInvalid input. Try again\n");
