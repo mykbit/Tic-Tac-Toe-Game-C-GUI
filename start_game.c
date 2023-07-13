@@ -1,4 +1,4 @@
-#include "game.h"
+#include "start_game.h"
 
 char input[MAX_LENGTH];
 int parsed_value;
