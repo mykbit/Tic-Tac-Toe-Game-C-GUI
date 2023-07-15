@@ -1,4 +1,5 @@
-#include "game.h"
+#include "start_game.h"
+#include "window.h"
 
 char input[MAX_LENGTH];
 int parsed_value;
@@ -13,6 +14,7 @@ void mode_select(int value) {
         case 1:
             printf("Player vs Player\n");
             //start Player vs Player game
+            open_window();
             break;
         case 2:
             printf("Player vs CPU\n");
