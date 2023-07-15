@@ -2,7 +2,7 @@
 
 void open_window() {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+    gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
     gtk_window_set_title(GTK_WINDOW(window), "Tic Tac Toe");
     g_signal_connect(window, "delete_event", G_CALLBACK(quit_app), NULL);
 
@@ -11,19 +11,21 @@ void open_window() {
     
     GtkWidget *score_lbl = gtk_label_new("Score\n 0 : 0");
 
+    GtkWidget *turn_lbl = gtk_label_new("Game Start!");
+
     // create a grid to hold the score and exit button
     GtkWidget *game_grid = gtk_grid_new();
 
     // create buttons 3 by 3
-    GtkWidget *btn11 = gtk_button_new_with_label("11");
-    GtkWidget *btn12 = gtk_button_new_with_label("12");
-    GtkWidget *btn13 = gtk_button_new_with_label("13");
-    GtkWidget *btn21 = gtk_button_new_with_label("21");
-    GtkWidget *btn22 = gtk_button_new_with_label("22");
-    GtkWidget *btn23 = gtk_button_new_with_label("23");
-    GtkWidget *btn31 = gtk_button_new_with_label("31");
-    GtkWidget *btn32 = gtk_button_new_with_label("32");
-    GtkWidget *btn33 = gtk_button_new_with_label("33");
+    GtkWidget *btn11 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn12 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn13 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn21 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn22 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn23 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn31 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn32 = gtk_button_new_with_label("\u00B7");
+    GtkWidget *btn33 = gtk_button_new_with_label("\u00B7");
 
     // create signal handlers for the buttons
     g_signal_connect(btn11, "clicked", G_CALLBACK(test_click_func), NULL);
@@ -70,17 +72,18 @@ void open_window() {
 
     // create a grid to hold the button and label
     GtkWidget *main_grid = gtk_grid_new();
-    // make both widgets expand to fill the grid
+    // make the widgets expand to fill the grid
     gtk_widget_set_hexpand(exit_button, TRUE);
     gtk_widget_set_vexpand(exit_button, TRUE);
     gtk_widget_set_hexpand(score_lbl, TRUE);
     gtk_widget_set_vexpand(score_lbl, TRUE);
+    gtk_widget_set_hexpand(turn_lbl, TRUE);
+    gtk_widget_set_vexpand(turn_lbl, TRUE);
 
-    // add the widgets to the grid
-    gtk_grid_attach(GTK_GRID(main_grid), game_grid, 0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), score_lbl, 1, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), exit_button, 1, 1, 2, 1);
-    
+    gtk_grid_attach(GTK_GRID(main_grid), turn_lbl,    0, 0, 2, 1);
+    gtk_grid_attach(GTK_GRID(main_grid), game_grid,   0, 1, 1, 10);
+    gtk_grid_attach(GTK_GRID(main_grid), score_lbl,   1, 1, 1, 7);
+    gtk_grid_attach(GTK_GRID(main_grid), exit_button, 1, 9, 1, 2);  
 
     gtk_container_add(GTK_CONTAINER(window), main_grid);
     gtk_widget_show_all(window);
