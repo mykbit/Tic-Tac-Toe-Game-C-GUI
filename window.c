@@ -1,5 +1,8 @@
 #include "window.h"
 
+gchar *current_turn_string = "Player 1's Turn";
+gchar *start_game_string = "Game Start!";
+
 void open_window() {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
@@ -28,15 +31,15 @@ void open_window() {
     GtkWidget *btn33 = gtk_button_new_with_label("\u00B7");
 
     // create signal handlers for the buttons
-    g_signal_connect(btn11, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn12, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn13, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn21, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn22, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn23, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn31, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn32, "clicked", G_CALLBACK(test_click_func), NULL);
-    g_signal_connect(btn33, "clicked", G_CALLBACK(test_click_func), NULL);
+    g_signal_connect(btn11, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn12, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn13, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn21, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn22, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn23, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn31, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn32, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
+    g_signal_connect(btn33, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
 
     // make widgets expand to fill the grid
     gtk_widget_set_hexpand(btn11, TRUE);
@@ -87,6 +90,7 @@ void open_window() {
 
     gtk_container_add(GTK_CONTAINER(window), main_grid);
     gtk_widget_show_all(window);
+    g_timeout_add_seconds(3, game_start_text, turn_lbl);
     gtk_main();
     return;
 }
@@ -94,6 +98,20 @@ void open_window() {
 void quit_app(GtkWidget *widget, gpointer ptr) {
     gtk_main_quit();
     return;
+}
+
+// Callback function to change the label text
+gboolean game_start_text(gpointer user_data) {
+    // Retrieve the label widget from the user_data
+    GtkWidget *label = GTK_WIDGET(user_data);
+
+    const gchar *s = gtk_label_get_text(GTK_LABEL(label));
+
+    if (g_strcmp0(s, start_game_string) == 0) {
+        gtk_label_set_text(GTK_LABEL(label), current_turn_string);
+    }
+    // Return FALSE to stop the timeout
+    return FALSE;
 }
 
 void draw_score(GtkWidget *widget, gpointer ptr) {
@@ -114,6 +132,19 @@ char *count_score() {
     return 0;
 }
 
-void test_click_func(GtkWidget *widget, gpointer ptr) {
-    gtk_button_set_label(GTK_BUTTON(widget), "X");
+void button_click_callback(GtkWidget *widget, gpointer ptr) {
+    gtk_widget_set_sensitive(widget, FALSE);
+    GtkWidget *turn = GTK_WIDGET(ptr);
+
+    const gchar *turn_text = gtk_label_get_text(GTK_LABEL(turn));
+    
+    if (g_strcmp0(turn_text, current_turn_string) == 0 || g_strcmp0(turn_text, start_game_string) == 0) {
+        gtk_button_set_label(GTK_BUTTON(widget), "X");
+        gtk_label_set_text(GTK_LABEL(turn), "Player 2's Turn");
+    }
+    else {
+        gtk_button_set_label(GTK_BUTTON(widget), "O");
+        gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
+    }
+    
 }
