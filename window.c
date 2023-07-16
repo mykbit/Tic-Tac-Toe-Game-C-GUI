@@ -124,14 +124,6 @@ void draw_score(GtkWidget *widget, gpointer ptr, int X, int O) {
     gtk_label_set_text(GTK_LABEL(ptr), buffer);
 }
 
-char *count_score() {
-    // if player 1 wins, increment X
-    // if player 2 wins, increment O
-    // if draw, do nothing
-    // return the score
-    return 0;
-}
-
 void button_click_callback(GtkWidget *widget, gpointer ptr) {
     turn_count++;
     gtk_widget_set_sensitive(widget, FALSE);
@@ -183,19 +175,9 @@ void apply_widget_position(GtkWidget *widget) {
     gint y = allocation.y;
 
     // Print the position of the widget
-    printf("Widget position: x = %d, y = %d\n", x, y);
+    //printf("Widget position: x = %d, y = %d\n", x, y);
 
     matrix[x / 183][y / 181] = current_symbol;
-    print_matrix();
-}
-
-void print_matrix() {
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            printf("%c", matrix[i][j]);
-        }
-        printf("\n");
-    }
 }
 
 int check_win() {
@@ -223,5 +205,5 @@ int check_win() {
         return 0; // Draw
     }
 
-    else return 0; // No winning combination found yet
+    else return -1; // No winning combination found yet
 }
