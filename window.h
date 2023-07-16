@@ -7,6 +7,8 @@ int O;
 char current_symbol;
 int turn_count;
 char matrix[3][3];
+GtkWidget *score_lbl;
+GtkWidget *game_grid;
 
 void open_window();
 
@@ -14,7 +16,7 @@ void quit_app(GtkWidget *widget, gpointer ptr);
 
 gboolean game_start_text(gpointer user_data);
 
-void draw_score(GtkWidget *widget, gpointer ptr, int X, int O);
+void draw_score(gpointer ptr, int X, int O);
 
 char *count_score();
 

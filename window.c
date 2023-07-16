@@ -13,12 +13,13 @@ void open_window() {
     GtkWidget *exit_button = gtk_button_new_with_label("Exit");
     g_signal_connect(exit_button, "clicked", G_CALLBACK(quit_app), NULL);
     
-    GtkWidget *score_lbl = gtk_label_new("Score\n 0 : 0");
+    score_lbl = gtk_label_new("");
+    draw_score(score_lbl, X, O);
 
     GtkWidget *turn_lbl = gtk_label_new("Game Start!");
 
     // create a grid to hold the score and exit button
-    GtkWidget *game_grid = gtk_grid_new();
+    game_grid = gtk_grid_new();
 
     // create buttons 3 by 3
     GtkWidget *btn11 = gtk_button_new_with_label("\u00B7");
@@ -114,13 +115,10 @@ gboolean game_start_text(gpointer user_data) {
     return FALSE;
 }
 
-void draw_score(GtkWidget *widget, gpointer ptr, int X, int O) {
+void draw_score(gpointer ptr, int X, int O) {
     char buffer[30];
 
-    // TODO: get the score from the game
-
-    printf("Score");
-    sprintf(buffer, "%d : %d", X, O);
+    sprintf(buffer, "Score\n %d : %d", X, O);
     gtk_label_set_text(GTK_LABEL(ptr), buffer);
 }
 
@@ -153,15 +151,19 @@ void apply_turn(GtkWidget *widget, gpointer ptr) {
     if (result == 1 && current_symbol == 'X') {
         X++;
         gtk_label_set_text(GTK_LABEL(ptr), "Player 1 Wins!");
+        gtk_widget_set_sensitive(game_grid, FALSE);
     }
     else if (result == 1 && current_symbol == 'O') {
         O++;
         gtk_label_set_text(GTK_LABEL(ptr), "Player 2 Wins!");
+        gtk_widget_set_sensitive(game_grid, FALSE);
     }
     else if (result == 0 && turn_count == 9) {
         gtk_label_set_text(GTK_LABEL(ptr), "Draw!");
+        gtk_widget_set_sensitive(game_grid, FALSE);
     }
-    //draw_score(widget, ptr, X, O);
+    draw_score(score_lbl, X, O);
+    
 }
 
 void apply_widget_position(GtkWidget *widget) {
