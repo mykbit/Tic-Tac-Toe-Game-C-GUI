@@ -3,6 +3,7 @@
 gchar *current_turn_string = "Player 1's Turn";
 gchar *start_game_string = "Game Start!";
 
+
 void open_window() {
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
@@ -72,7 +73,6 @@ void open_window() {
     gtk_grid_attach(GTK_GRID(game_grid), btn32, 2, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(game_grid), btn33, 2, 2, 1, 1);
 
-
     // create a grid to hold the button and label
     GtkWidget *main_grid = gtk_grid_new();
     // make the widgets expand to fill the grid
@@ -114,13 +114,13 @@ gboolean game_start_text(gpointer user_data) {
     return FALSE;
 }
 
-void draw_score(GtkWidget *widget, gpointer ptr) {
+void draw_score(GtkWidget *widget, gpointer ptr, int X, int O) {
     char buffer[30];
 
     // TODO: get the score from the game
 
     printf("Score");
-    sprintf(buffer, "%s : %s", X, O);
+    sprintf(buffer, "%d : %d", X, O);
     gtk_label_set_text(GTK_LABEL(ptr), buffer);
 }
 
@@ -133,18 +133,95 @@ char *count_score() {
 }
 
 void button_click_callback(GtkWidget *widget, gpointer ptr) {
+    turn_count++;
     gtk_widget_set_sensitive(widget, FALSE);
     GtkWidget *turn = GTK_WIDGET(ptr);
+
 
     const gchar *turn_text = gtk_label_get_text(GTK_LABEL(turn));
     
     if (g_strcmp0(turn_text, current_turn_string) == 0 || g_strcmp0(turn_text, start_game_string) == 0) {
+        current_symbol = 'X';
         gtk_button_set_label(GTK_BUTTON(widget), "X");
         gtk_label_set_text(GTK_LABEL(turn), "Player 2's Turn");
     }
     else {
+        current_symbol = 'O';
         gtk_button_set_label(GTK_BUTTON(widget), "O");
         gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
     }
     
+    apply_turn(widget, ptr);
+
+}
+
+void apply_turn(GtkWidget *widget, gpointer ptr) {
+    apply_widget_position(widget);
+    int result = check_win();
+    if (result == 1 && current_symbol == 'X') {
+        X++;
+        gtk_label_set_text(GTK_LABEL(ptr), "Player 1 Wins!");
+    }
+    else if (result == 1 && current_symbol == 'O') {
+        O++;
+        gtk_label_set_text(GTK_LABEL(ptr), "Player 2 Wins!");
+    }
+    else if (result == 0 && turn_count == 9) {
+        gtk_label_set_text(GTK_LABEL(ptr), "Draw!");
+    }
+    //draw_score(widget, ptr, X, O);
+}
+
+void apply_widget_position(GtkWidget *widget) {
+    GtkAllocation allocation;
+
+    // Get the allocation of the widget
+    gtk_widget_get_allocation(widget, &allocation);
+
+    // Access the position of the widget
+    gint x = allocation.x;
+    gint y = allocation.y;
+
+    // Print the position of the widget
+    printf("Widget position: x = %d, y = %d\n", x, y);
+
+    matrix[x / 183][y / 181] = current_symbol;
+    print_matrix();
+}
+
+void print_matrix() {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%c", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int check_win() {
+    // Check rows
+    for (int i = 0; i < 3; i++) {
+        if (matrix[i][0] == current_symbol && matrix[i][1] == current_symbol && matrix[i][2] == current_symbol) {
+            return 1; // Winning combination found
+        }
+    }
+
+    // Check columns
+    for (int j = 0; j < 3; j++) {
+        if (matrix[0][j] == current_symbol && matrix[1][j] == current_symbol && matrix[2][j] == current_symbol) {
+            return 1; // Winning combination found
+        }
+    }
+
+    // Check diagonals
+    if ((matrix[0][0] == current_symbol && matrix[1][1] == current_symbol && matrix[2][2] == current_symbol) ||
+        (matrix[0][2] == current_symbol && matrix[1][1] == current_symbol && matrix[2][0] == current_symbol)) {
+        return 1; // Winning combination found
+    }
+
+    if (turn_count == 9) {
+        return 0; // Draw
+    }
+
+    else return 0; // No winning combination found yet
 }
