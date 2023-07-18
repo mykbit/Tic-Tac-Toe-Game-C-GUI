@@ -18,9 +18,13 @@ void restart_game(GtkWidget *widget, gpointer ptr);
 
 void button_click_callback(GtkWidget *widget, gpointer ptr);
 
+void set_next_turn(GtkWidget *widget, GtkWidget *turn);
+
 void apply_turn(GtkWidget *widget, gpointer ptr);
 
 void apply_widget_position_on_matrix(GtkWidget *widget);
+
+void game_result(gpointer ptr, int result);
 
 int check_win();
 
