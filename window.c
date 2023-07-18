@@ -1,9 +1,16 @@
 #include "window.h"
 #include "game_logic.h"
 
+int window_x = DEFAULT_X;
+int window_y = DEFAULT_Y;
+int width_x = DEFAULT_W;
+int height_y = DEFAULT_H;
+
 void create_game_window() {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(window), 1000, 600);
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_NONE);
+    gtk_window_move(GTK_WINDOW(window), window_x, window_y+28);
+    gtk_window_resize(GTK_WINDOW(window), width_x, height_y);
     gtk_window_set_title(GTK_WINDOW(window), "Tic Tac Toe");
     window_handler_id = g_signal_connect(window, "delete_event", G_CALLBACK(quit_app), NULL);
 
@@ -17,7 +24,6 @@ void create_game_window() {
     restart_button_handler_id = g_signal_connect(restart_btn, "clicked", G_CALLBACK(restart_game), NULL);
     gtk_widget_set_sensitive(restart_btn, FALSE);
 
-    
     score_lbl = gtk_label_new("");
     draw_score(score_lbl, X, O);
 
@@ -123,7 +129,9 @@ void quit_app(GtkWidget *widget, gpointer ptr) {
 void restart_game(GtkWidget *widget, gpointer ptr) {
     turn_count = 0;
     clean_matrix();
-    gtk_widget_destroy(widget);
+    gtk_window_get_position(GTK_WINDOW(window), &window_x, &window_y);
+    gtk_window_get_size(GTK_WINDOW(window), &width_x, &height_y);
+    gtk_widget_destroy(window);
     gtk_main_quit();
     open_window();
 }

@@ -1,6 +1,10 @@
 #include <gtk/gtk.h>
 
 #define MAX_LENGTH 256
+#define DEFAULT_X 0
+#define DEFAULT_Y 0
+#define DEFAULT_W 1000
+#define DEFAULT_H 600
 
 extern GtkWidget *window;
 extern GtkWidget *exit_button;
