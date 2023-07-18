@@ -122,19 +122,6 @@ void quit_app(GtkWidget *widget, gpointer ptr) {
 void restart_game(GtkWidget *widget, gpointer ptr) {
     turn_count = 0;
     clean_matrix();
-    g_signal_handler_disconnect(window, window_handler_id);
-    g_signal_handler_disconnect(exit_button, exit_button_handler_id);
-    g_signal_handler_disconnect(restart_btn, restart_button_handler_id);
-    g_signal_handler_disconnect(btn11, btn11_handler_id);
-    g_signal_handler_disconnect(btn12, btn12_handler_id);
-    g_signal_handler_disconnect(btn13, btn13_handler_id);
-    g_signal_handler_disconnect(btn21, btn21_handler_id);
-    g_signal_handler_disconnect(btn22, btn22_handler_id);
-    g_signal_handler_disconnect(btn23, btn23_handler_id);
-    g_signal_handler_disconnect(btn31, btn31_handler_id);
-    g_signal_handler_disconnect(btn32, btn32_handler_id);
-    g_signal_handler_disconnect(btn33, btn33_handler_id);
-
     gtk_widget_destroy(window);
     gtk_main_quit();
     open_window();
