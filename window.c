@@ -24,10 +24,11 @@ void create_game_window() {
     restart_button_handler_id = g_signal_connect(restart_btn, "clicked", G_CALLBACK(restart_game), NULL);
     gtk_widget_set_sensitive(restart_btn, FALSE);
 
-    score_lbl = gtk_label_new("");
+    score_lbl = gtk_label_new(NULL);
     draw_score(score_lbl, X, O);
 
-    turn_lbl = gtk_label_new("Game Start!");
+    turn_lbl = gtk_label_new(NULL);
+    gtk_label_set_text(GTK_LABEL(turn_lbl), start_game_string);
 
     // create a grid to hold the score and exit button
     game_grid = gtk_grid_new();
@@ -135,6 +136,8 @@ void quit_app(GtkWidget *widget, gpointer ptr) {
 
 void restart_game(GtkWidget *widget, gpointer ptr) {
     turn_count = 0;
+    current_symbol = 'X';
+    game_finished = FALSE;
     clean_matrix();
     gtk_window_get_position(GTK_WINDOW(window), &window_x, &window_y);
     gtk_window_get_size(GTK_WINDOW(window), &width_x, &height_y);

@@ -2,10 +2,11 @@
 
 int sel_mode;
 int turn_count;
-char current_symbol;
 int X;
 int O;
 char matrix[3][3];
+char current_symbol;
+gboolean game_finished;
 
 GtkWidget *window;
 GtkWidget *exit_button;
@@ -21,7 +22,7 @@ void button_click_callback(GtkWidget *widget, gpointer ptr);
 
 void first_move_btn_callback(GtkWidget *widget, gpointer ptr);
 
-void set_next_turn(GtkWidget *widget, GtkWidget *turn);
+void set_next_turn(GtkWidget *turn);
 
 void apply_turn(GtkWidget *widget, gpointer ptr);
 

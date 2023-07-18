@@ -1,10 +1,15 @@
 #include "game_logic.h"
 
+char current_symbol = 'X';
+gboolean game_finished = FALSE;
+
 void button_click_callback(GtkWidget *widget, gpointer ptr) {
     turn_count++;
     gtk_widget_set_sensitive(widget, FALSE);
-    set_next_turn(widget, GTK_WIDGET(ptr));
     apply_turn(widget, ptr);
+    if (!game_finished) {
+        set_next_turn(GTK_WIDGET(ptr));
+    }
 }
 
 void first_move_btn_callback(GtkWidget *widget, gpointer ptr) {
@@ -19,27 +24,40 @@ void first_move_btn_callback(GtkWidget *widget, gpointer ptr) {
     else gtk_label_set_text(GTK_LABEL(ptr), "CPU's Turn");
 }
 
-void set_next_turn(GtkWidget *widget, GtkWidget *turn) {
+void set_next_turn(GtkWidget *turn) {
     const gchar *turn_text = gtk_label_get_text(GTK_LABEL(turn));
-    if (g_strcmp0(turn_text, current_turn_string) == 0 || g_strcmp0(turn_text, start_game_string) == 0) {
-        current_symbol = 'X';
-        gtk_button_set_label(GTK_BUTTON(widget), "X");
-        if (sel_mode == 1) {
-            gtk_label_set_text(GTK_LABEL(turn), "Player 2's Turn");
+    if (current_symbol == 'X') {
+        current_symbol = 'O';
+        if (sel_mode == 2) {
+            if (g_strcmp0(turn_text, "Player 1's Turn") == 0) {
+                gtk_label_set_text(GTK_LABEL(turn), "CPU's Turn");
+            }
+            else {
+                gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
+            }
         }
         else {
-            gtk_label_set_text(GTK_LABEL(turn), "CPU's Turn");
-            // TODO: engage AI
-        }  
+            gtk_label_set_text(GTK_LABEL(turn), "Player 2's Turn");
+        }
     }
-    else {
-        current_symbol = 'O';
-        gtk_button_set_label(GTK_BUTTON(widget), "O");
-        gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
+    else if (current_symbol == 'O') {
+        current_symbol = 'X';
+        if (sel_mode == 2) {
+            if (g_strcmp0(turn_text, "CPU's Turn") == 0) {
+                gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
+            }
+            else {
+                gtk_label_set_text(GTK_LABEL(turn), "CPU's Turn");
+            }
+        }
+        else {
+            gtk_label_set_text(GTK_LABEL(turn), "Player 1's Turn");
+        }
     }
 }
 
 void apply_turn(GtkWidget *widget, gpointer ptr) {
+    gtk_button_set_label(GTK_BUTTON(widget), &current_symbol);
     apply_widget_position_on_matrix(widget);
     int result = check_win();
     game_result(ptr, result);
@@ -56,24 +74,44 @@ void apply_widget_position_on_matrix(GtkWidget *widget) {
 }
 
 void game_result(gpointer ptr, int result) {
-    if (result == 1 && current_symbol == 'X') {
-        X++;
-        gtk_label_set_text(GTK_LABEL(ptr), "Player 1 Wins!");
+    if (result == 0 || result == 1) {
         gtk_widget_set_sensitive(game_grid, FALSE);
         gtk_widget_set_sensitive(restart_btn, TRUE);
-    }
-    else if (result == 1 && current_symbol == 'O') {
-        O++;
-        gtk_label_set_text(GTK_LABEL(ptr), "Player 2 Wins!");
-        gtk_widget_set_sensitive(game_grid, FALSE);
-        gtk_widget_set_sensitive(restart_btn, TRUE);
-    }
-    else if (result == 0 && turn_count == 9) {
-        gtk_label_set_text(GTK_LABEL(ptr), "Draw!");
-        gtk_widget_set_sensitive(game_grid, FALSE);
-        gtk_widget_set_sensitive(restart_btn, TRUE);
+
+        if (result == 1) {
+            const gchar *playerLabel = "Player 1 Wins!";
+            const gchar *cpuLabel = "CPU Wins!";
+            gboolean isCPUTurn = g_strcmp0(gtk_label_get_text(GTK_LABEL(ptr)), "CPU's Turn") == 0;
+
+            if (sel_mode == 2) {
+                if (current_symbol == 'X') {
+                    X++;
+                    gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                }
+                else {
+                    O++;
+                    gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                }
+            }
+            else {
+                if (current_symbol == 'X') {
+                    X++;
+                    gtk_label_set_text(GTK_LABEL(ptr), playerLabel);
+                }
+                else {
+                    O++;
+                    gtk_label_set_text(GTK_LABEL(ptr), "Player 2 Wins!");
+                }
+            }
+        }
+        else if (result == 0) {
+            gtk_label_set_text(GTK_LABEL(ptr), "Draw!");
+        }
+        
+        game_finished = TRUE;
     }
 }
+
 
 int check_win() {
     // Check rows
@@ -127,13 +165,6 @@ gboolean game_start_text(gpointer user_data) {
 
 void draw_score(gpointer ptr, int X, int O) {
     char buffer[30];
-
     sprintf(buffer, "Score\n %d : %d", X, O);
     gtk_label_set_text(GTK_LABEL(ptr), buffer);
 }
-
-// if turn count is odd or even (depends on who started first), CPU will perform a move. Oddness or evenness is checked
-// by turn_count % game_order. If the result is 0, then it's even, otherwise it's odd. CPU will perform a move
-// by editing the matrix, which indices will be converted into string which represents button's id.
-// then, the button will be found by its id and its label will be changed. finally, the button will be disabled.
-// Every action by CPU will be delayed by 1 second for better UX.
