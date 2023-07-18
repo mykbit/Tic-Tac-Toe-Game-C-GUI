@@ -95,7 +95,8 @@ void create_game_window() {
     gtk_grid_attach(GTK_GRID(game_grid), btn33, 2, 2, 1, 1);
 
     // create a grid to hold the button and label
-    GtkWidget *main_grid = gtk_grid_new();
+    main_grid = gtk_grid_new();
+
     // make the widgets expand to fill the grid
     gtk_widget_set_hexpand(exit_button, TRUE);
     gtk_widget_set_vexpand(exit_button, TRUE);
@@ -106,15 +107,21 @@ void create_game_window() {
     gtk_widget_set_hexpand(restart_btn, TRUE);
     gtk_widget_set_vexpand(restart_btn, TRUE);
 
-    gtk_grid_attach(GTK_GRID(main_grid), turn_lbl,    0, 0, 2, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), game_grid,   0, 1, 1, 10);
-    gtk_grid_attach(GTK_GRID(main_grid), score_lbl,   1, 1, 1, 5);
-    gtk_grid_attach(GTK_GRID(main_grid), restart_btn, 1, 7, 1, 2);
-    gtk_grid_attach(GTK_GRID(main_grid), exit_button, 1, 9, 1, 2);  
+    if (sel_mode == 2) {
+        add_buttons_for_pve();
+    }
+    
+    gtk_grid_attach(GTK_GRID(main_grid), turn_lbl,    0, 0, 6, 3);
+    gtk_grid_attach(GTK_GRID(main_grid), game_grid,   0, 3, 3, 30);
+    gtk_grid_attach(GTK_GRID(main_grid), score_lbl,   3, 3, 3, 15);
+    gtk_grid_attach(GTK_GRID(main_grid), restart_btn, 3, 21, 3, 6);
+    gtk_grid_attach(GTK_GRID(main_grid), exit_button, 3, 27, 3, 6);  
 
     gtk_container_add(GTK_CONTAINER(window), main_grid);
     gtk_widget_show_all(window);
-    g_timeout_add_seconds(3, game_start_text, turn_lbl);
+    if (sel_mode == 1) {
+        g_timeout_add_seconds(3, game_start_text, turn_lbl);
+    }
 }
 
 void open_window() {
@@ -134,4 +141,22 @@ void restart_game(GtkWidget *widget, gpointer ptr) {
     gtk_widget_destroy(window);
     gtk_main_quit();
     open_window();
+}
+
+void add_buttons_for_pve() {
+    player1_btn = gtk_button_new_with_label("First move\n  Player 1");
+    g_object_set_data(G_OBJECT(player1_btn), "id", "1");
+    player1_btn_handler_id = g_signal_connect(player1_btn, "clicked", G_CALLBACK(first_move_btn_callback), turn_lbl);
+    gtk_widget_set_hexpand(player1_btn, TRUE);
+    gtk_widget_set_vexpand(player1_btn, TRUE);
+
+    cpu_btn = gtk_button_new_with_label("First move\n   CPU");
+    g_object_set_data(G_OBJECT(cpu_btn), "id", "2");
+    cpu_btn_handler_id = g_signal_connect(cpu_btn, "clicked", G_CALLBACK(first_move_btn_callback), turn_lbl);
+    gtk_widget_set_hexpand(cpu_btn, TRUE);
+    gtk_widget_set_vexpand(cpu_btn, TRUE);
+
+    gtk_grid_attach(GTK_GRID(main_grid), player1_btn, 3, 18, 1, 1);
+    gtk_grid_attach(GTK_GRID(main_grid), cpu_btn, 4, 18, 1, 1);
+    gtk_widget_set_sensitive(game_grid, FALSE);
 }

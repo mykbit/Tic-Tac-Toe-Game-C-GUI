@@ -1,16 +1,8 @@
 #include "start_game.h"
 #include "window.h"
 
-char input[MAX_LENGTH];
-int parsed_value;
-
-// void player_vs_player() {
-
-// }
-
-
-void mode_select(int value) {
-    switch(parsed_value) {
+void mode_select() {
+    switch(sel_mode) {
         case 1:
             printf("Player vs Player\n");
             //start Player vs Player game
@@ -18,7 +10,7 @@ void mode_select(int value) {
             break;
         case 2:
             printf("Player vs CPU\n");
-            //start Player vs CPU game
+            open_window();
             break;
         case 3:
             printf("Exiting the application...\n");
@@ -40,16 +32,13 @@ void play_game() {
     while (1) {
         fgets(input, sizeof(input), stdin);
         char* endptr;
-        parsed_value = strtol(input, &endptr, 0);
-        if (endptr != input && *endptr == '\n' && parsed_value >= 1 && parsed_value <= 3) {
+        sel_mode = strtol(input, &endptr, 0);
+        if (endptr != input && *endptr == '\n' && sel_mode >= 1 && sel_mode <= 3) {
             break;
         }
         printf("\nInvalid input. Try again\n");
         printf("Type the corresponding number: ");
     }
 
-    mode_select(parsed_value);
+    mode_select();
 }
-
-
-

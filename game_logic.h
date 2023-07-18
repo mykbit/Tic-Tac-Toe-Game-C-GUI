@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 
+int sel_mode;
 int turn_count;
 char current_symbol;
 int X;
@@ -11,12 +12,14 @@ GtkWidget *exit_button;
 GtkWidget *score_lbl;
 GtkWidget *game_grid;
 GtkWidget *restart_btn;
+GtkWidget *player1_btn;
+GtkWidget *cpu_btn;
 gchar *current_turn_string;
 gchar *start_game_string;
 
-void restart_game(GtkWidget *widget, gpointer ptr);
-
 void button_click_callback(GtkWidget *widget, gpointer ptr);
+
+void first_move_btn_callback(GtkWidget *widget, gpointer ptr);
 
 void set_next_turn(GtkWidget *widget, GtkWidget *turn);
 
