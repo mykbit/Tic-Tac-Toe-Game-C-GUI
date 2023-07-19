@@ -8,6 +8,9 @@ char matrix[3][3];
 char current_symbol;
 gboolean game_finished;
 
+gboolean player1_first_move;
+gboolean cpu_first_move;
+
 GtkWidget *window;
 GtkWidget *exit_button;
 GtkWidget *score_lbl;

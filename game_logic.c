@@ -2,6 +2,8 @@
 
 char current_symbol = 'X';
 gboolean game_finished = FALSE;
+gboolean player1_first_move = FALSE;
+gboolean cpu_first_move = FALSE;
 
 void button_click_callback(GtkWidget *widget, gpointer ptr) {
     turn_count++;
@@ -20,8 +22,12 @@ void first_move_btn_callback(GtkWidget *widget, gpointer ptr) {
     char *button_id = g_object_get_data(G_OBJECT(widget), "id");
     if (button_id[0] == '1') {
         gtk_label_set_text(GTK_LABEL(ptr), "Player 1's Turn");
+        player1_first_move = TRUE;
     }
-    else gtk_label_set_text(GTK_LABEL(ptr), "CPU's Turn");
+    else {
+        gtk_label_set_text(GTK_LABEL(ptr), "CPU's Turn");
+        cpu_first_move = TRUE;
+    }
 }
 
 void set_next_turn(GtkWidget *turn) {
@@ -80,17 +86,30 @@ void game_result(gpointer ptr, int result) {
 
         if (result == 1) {
             const gchar *playerLabel = "Player 1 Wins!";
+            const gchar *player2Label = "Player 2 Wins!";
             const gchar *cpuLabel = "CPU Wins!";
             gboolean isCPUTurn = g_strcmp0(gtk_label_get_text(GTK_LABEL(ptr)), "CPU's Turn") == 0;
 
             if (sel_mode == 2) {
                 if (current_symbol == 'X') {
-                    X++;
-                    gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    if (player1_first_move) {
+                        X++;
+                        gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    }
+                    else if (cpu_first_move) {
+                        O++;
+                        gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    }
                 }
                 else {
-                    O++;
-                    gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    if (player1_first_move) {
+                        O++;
+                        gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    }
+                    else if (cpu_first_move) {
+                        X++;
+                        gtk_label_set_text(GTK_LABEL(ptr), isCPUTurn ? cpuLabel : playerLabel);
+                    }
                 }
             }
             else {
@@ -100,14 +119,13 @@ void game_result(gpointer ptr, int result) {
                 }
                 else {
                     O++;
-                    gtk_label_set_text(GTK_LABEL(ptr), "Player 2 Wins!");
+                    gtk_label_set_text(GTK_LABEL(ptr), player2Label);
                 }
             }
         }
         else if (result == 0) {
             gtk_label_set_text(GTK_LABEL(ptr), "Draw!");
         }
-        
         game_finished = TRUE;
     }
 }
