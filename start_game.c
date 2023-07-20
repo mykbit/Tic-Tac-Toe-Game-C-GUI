@@ -13,9 +13,13 @@ void mode_select() {
             open_window();
             break;
         case 3:
+            printf("Player vs CPU (Impossible)\n");
+            open_window();
+            break;
+        case 4:
             printf("Exiting the application...\n");
-            // close the application
             exit(0);
+            break;
         default:
             printf("???\n");
             break;
@@ -26,7 +30,8 @@ void play_game() {
     printf("Choose the game mode:\n");
     printf("1. Player vs Player\n");
     printf("2. Player vs CPU\n");
-    printf("3. Exit the application\n");
+    printf("3. Player vs CPU (Impossible)\n");
+    printf("4. Exit the application\n");
     printf("Type the corresponding number: ");
 
     while (1) {

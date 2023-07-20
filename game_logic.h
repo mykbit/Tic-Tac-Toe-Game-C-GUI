@@ -1,15 +1,20 @@
 #include <gtk/gtk.h>
+#include "button_hashtable.h"
+#include <math.h>
 
 int sel_mode;
 int turn_count;
 int X;
 int O;
 char matrix[3][3];
-char current_symbol;
-gboolean game_finished;
+extern char current_symbol;
 
+gboolean game_finished;
 gboolean player1_first_move;
 gboolean cpu_first_move;
+gboolean cpu_turn_flag;
+
+HashTable *table;
 
 GtkWidget *window;
 GtkWidget *exit_button;
@@ -27,9 +32,11 @@ void first_move_btn_callback(GtkWidget *widget, gpointer ptr);
 
 void set_next_turn(GtkWidget *turn);
 
-void apply_turn(GtkWidget *widget, gpointer ptr);
+void apply_turn_player(GtkWidget *widget, gpointer ptr);
 
 void apply_widget_position_on_matrix(GtkWidget *widget);
+
+gboolean apply_turn_cpu(gpointer ptr);
 
 void game_result(gpointer ptr, int result);
 
@@ -40,3 +47,11 @@ void clean_matrix();
 gboolean game_start_text(gpointer user_data);
 
 void draw_score(gpointer ptr, int X, int O);
+
+void cpu_move();
+
+void cpu_move_impossible();
+
+int minimax(char player_symbol);
+
+void apply_matrix_position_on_widget(int i, int j);

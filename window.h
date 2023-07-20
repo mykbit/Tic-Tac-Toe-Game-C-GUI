@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include "button_hashtable.h"
 
 #define MAX_LENGTH 256
 #define DEFAULT_X 0
@@ -17,7 +18,7 @@ extern GtkWidget *cpu_btn;
 extern gchar *current_turn_string;
 extern gchar *start_game_string;
 
-int sel_mode;
+extern HashTable *table;
 
 GtkWidget *main_grid;
 GtkWidget *turn_lbl;
@@ -45,6 +46,8 @@ gulong btn32_handler_id;
 gulong btn33_handler_id;
 gulong player1_btn_handler_id;
 gulong cpu_btn_handler_id;
+
+char current_symbol;
 
 void create_game_window();
 

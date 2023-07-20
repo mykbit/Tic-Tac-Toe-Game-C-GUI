@@ -14,6 +14,8 @@ void create_game_window() {
     gtk_window_set_title(GTK_WINDOW(window), "Tic Tac Toe");
     window_handler_id = g_signal_connect(window, "delete_event", G_CALLBACK(quit_app), NULL);
 
+    table = hash_table_create();
+
     current_turn_string = "Player 1's Turn";
     start_game_string = "Game Start!";
 
@@ -47,22 +49,39 @@ void create_game_window() {
     // create signal handlers for the buttons
     btn11_handler_id = g_signal_connect(btn11, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn11), "id", "00");
+    hash_table_insert(table, "00", btn11);
+
     btn12_handler_id = g_signal_connect(btn12, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn12), "id", "01");
+    hash_table_insert(table, "01", btn12);
+
     btn13_handler_id = g_signal_connect(btn13, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn13), "id", "02");
+    hash_table_insert(table, "02", btn13);
+
     btn21_handler_id = g_signal_connect(btn21, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn21), "id", "10");
+    hash_table_insert(table, "10", btn21);
+
     btn22_handler_id = g_signal_connect(btn22, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn22), "id", "11");
+    hash_table_insert(table, "11", btn22);
+
     btn23_handler_id = g_signal_connect(btn23, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn23), "id", "12");
+    hash_table_insert(table, "12", btn23);
+
     btn31_handler_id = g_signal_connect(btn31, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn31), "id", "20");
+    hash_table_insert(table, "20", btn31);
+
     btn32_handler_id = g_signal_connect(btn32, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn32), "id", "21");
+    hash_table_insert(table, "21", btn32);
+
     btn33_handler_id = g_signal_connect(btn33, "clicked", G_CALLBACK(button_click_callback), turn_lbl);
     g_object_set_data(G_OBJECT(btn33), "id", "22");
+    hash_table_insert(table, "22", btn33);
 
     // make widgets expand to fill the grid
     gtk_widget_set_hexpand(btn11, TRUE);
@@ -108,7 +127,7 @@ void create_game_window() {
     gtk_widget_set_hexpand(restart_btn, TRUE);
     gtk_widget_set_vexpand(restart_btn, TRUE);
 
-    if (sel_mode == 2) {
+    if (sel_mode >= 2) {
         add_buttons_for_pve();
     }
     
@@ -138,7 +157,10 @@ void restart_game(GtkWidget *widget, gpointer ptr) {
     turn_count = 0;
     current_symbol = 'X';
     game_finished = FALSE;
+    player1_first_move = FALSE;
+    cpu_first_move = FALSE;
     clean_matrix();
+    hash_table_destroy(table);
     gtk_window_get_position(GTK_WINDOW(window), &window_x, &window_y);
     gtk_window_get_size(GTK_WINDOW(window), &width_x, &height_y);
     gtk_widget_destroy(window);
@@ -153,7 +175,7 @@ void add_buttons_for_pve() {
     gtk_widget_set_hexpand(player1_btn, TRUE);
     gtk_widget_set_vexpand(player1_btn, TRUE);
 
-    cpu_btn = gtk_button_new_with_label("First move\n   CPU");
+    cpu_btn = gtk_button_new_with_label("First move\n     CPU");
     g_object_set_data(G_OBJECT(cpu_btn), "id", "2");
     cpu_btn_handler_id = g_signal_connect(cpu_btn, "clicked", G_CALLBACK(first_move_btn_callback), turn_lbl);
     gtk_widget_set_hexpand(cpu_btn, TRUE);
@@ -163,3 +185,5 @@ void add_buttons_for_pve() {
     gtk_grid_attach(GTK_GRID(main_grid), cpu_btn, 4, 18, 1, 1);
     gtk_widget_set_sensitive(game_grid, FALSE);
 }
+
+// matrix is cleared by blank spaces, while I need it to be cleared by null characters
