@@ -4,16 +4,15 @@
 void mode_select() {
     switch(sel_mode) {
         case 1:
-            printf("Player vs Player\n");
-            //start Player vs Player game
+            printf("Starting Player vs Player...\n");
             open_window();
             break;
         case 2:
-            printf("Player vs CPU\n");
+            printf("Starting Player vs CPU...\n");
             open_window();
             break;
         case 3:
-            printf("Player vs CPU (Impossible)\n");
+            printf("Starting Player vs CPU (Impossible)...\n");
             open_window();
             break;
         case 4:
