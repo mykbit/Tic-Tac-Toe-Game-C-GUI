@@ -1,20 +1,27 @@
 #include <gtk/gtk.h>
+#include "button_hashtable.h"
 
 #define MAX_LENGTH 256
+#define DEFAULT_X 0
+#define DEFAULT_Y 0
+#define DEFAULT_W 1000
+#define DEFAULT_H 600
 
-int X;
-int O;
-char current_symbol;
-int turn_count;
-char matrix[3][3];
-GtkWidget *window;
-GtkWidget *exit_button;
-GtkWidget *score_lbl;
-GtkWidget *game_grid;
-GtkWidget *restart_btn;
-GtkWidget *turn_lbl;
-gchar *current_turn_string;
-gchar *start_game_string;
+extern GtkWidget *window;
+extern GtkWidget *exit_button;
+extern GtkWidget *score_lbl;
+extern GtkWidget *game_grid;
+extern GtkWidget *restart_btn;
+extern GtkWidget *player1_btn;
+extern GtkWidget *cpu_btn;
+extern GtkWidget *turn_lbl;
+
+extern gchar *current_turn_string;
+extern gchar *start_game_string;
+
+extern HashTable *table;
+
+GtkWidget *main_grid;
 GtkWidget *btn11;
 GtkWidget *btn12;
 GtkWidget *btn13;
@@ -37,6 +44,12 @@ gulong btn23_handler_id;
 gulong btn31_handler_id;
 gulong btn32_handler_id;
 gulong btn33_handler_id;
+gulong player1_btn_handler_id;
+gulong cpu_btn_handler_id;
+
+char current_symbol;
+
+void create_game_window();
 
 void open_window();
 
@@ -44,20 +57,4 @@ void quit_app(GtkWidget *widget, gpointer ptr);
 
 void restart_game(GtkWidget *widget, gpointer ptr);
 
-gboolean game_start_text(gpointer user_data);
-
-void draw_score(gpointer ptr, int X, int O);
-
-char *count_score();
-
-void button_click_callback(GtkWidget *widget, gpointer ptr);
-
-void apply_turn(GtkWidget *widget, gpointer ptr);
-
-void apply_widget_position(GtkWidget *widget);
-
-void print_matrix();
-
-int check_win();
-
-void clean_matrix();
+void add_buttons_for_pve();
