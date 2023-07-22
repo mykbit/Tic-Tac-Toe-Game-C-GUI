@@ -7,5 +7,6 @@ brew install gtk+3
 pkg-config --cflags --libs gtk+-3.0
 ```
 # Gameplay
-<img width="1112" alt="Gameplay1" src="https://github.com/mykbit/Tic-Tac-Toe-Game-C-GUI/assets/96201443/43c8d9dc-414f-4cab-9fa3-7189d34a785a">
-<img width="1112" alt="Gameplay2" src="https://github.com/mykbit/Tic-Tac-Toe-Game-C-GUI/assets/96201443/a7d990da-6a37-491a-9d98-b970acc799f9">
+<img width="1112" alt="Gameplay1" src="https://github.com/mykbit/Tic-Tac-Toe-Game-C-GUI/assets/96201443/bee161e5-e5ae-4ff4-9e32-9d161f665421">
+<img width="1112" alt="Gameplay2" src="https://github.com/mykbit/Tic-Tac-Toe-Game-C-GUI/assets/96201443/172af58a-df11-47ef-873f-a1a918e6b8dd">
+
