@@ -14,6 +14,7 @@ extern GtkWidget *game_grid;
 extern GtkWidget *restart_btn;
 extern GtkWidget *player1_btn;
 extern GtkWidget *cpu_btn;
+extern GtkWidget *turn_lbl;
 
 extern gchar *current_turn_string;
 extern gchar *start_game_string;
@@ -21,7 +22,6 @@ extern gchar *start_game_string;
 extern HashTable *table;
 
 GtkWidget *main_grid;
-GtkWidget *turn_lbl;
 GtkWidget *btn11;
 GtkWidget *btn12;
 GtkWidget *btn13;

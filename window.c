@@ -154,7 +154,6 @@ void quit_app(GtkWidget *widget, gpointer ptr) {
 }
 
 void restart_game(GtkWidget *widget, gpointer ptr) {
-    turn_count = 0;
     current_symbol = 'X';
     game_finished = FALSE;
     player1_first_move = FALSE;
@@ -185,5 +184,3 @@ void add_buttons_for_pve() {
     gtk_grid_attach(GTK_GRID(main_grid), cpu_btn, 4, 18, 1, 1);
     gtk_widget_set_sensitive(game_grid, FALSE);
 }
-
-// matrix is cleared by blank spaces, while I need it to be cleared by null characters

@@ -38,7 +38,7 @@ void play_game() {
         fgets(input, sizeof(input), stdin);
         char* endptr;
         sel_mode = strtol(input, &endptr, 0);
-        if (endptr != input && *endptr == '\n' && sel_mode >= 1 && sel_mode <= 3) {
+        if (endptr != input && *endptr == '\n' && sel_mode >= 1 && sel_mode <= 4) {
             break;
         }
         printf("\nInvalid input. Try again\n");

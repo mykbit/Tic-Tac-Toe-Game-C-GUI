@@ -3,7 +3,6 @@
 #include <math.h>
 
 int sel_mode;
-int turn_count;
 int X;
 int O;
 char matrix[3][3];
@@ -23,6 +22,7 @@ GtkWidget *game_grid;
 GtkWidget *restart_btn;
 GtkWidget *player1_btn;
 GtkWidget *cpu_btn;
+GtkWidget *turn_lbl;
 gchar *current_turn_string;
 gchar *start_game_string;
 
@@ -40,7 +40,7 @@ gboolean apply_turn_cpu(gpointer ptr);
 
 void game_result(gpointer ptr, int result);
 
-int check_win();
+int check_win(char symbol);
 
 void clean_matrix();
 
@@ -50,8 +50,8 @@ void draw_score(gpointer ptr, int X, int O);
 
 void cpu_move();
 
-void cpu_move_impossible();
+int minimax(char player_symbol, int depth, gboolean is_maximizing);
 
-int minimax(char player_symbol);
+void cpu_move_impossible(char player_symbol);
 
 void apply_matrix_position_on_widget(int i, int j);
