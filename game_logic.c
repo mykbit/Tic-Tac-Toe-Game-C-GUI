@@ -6,7 +6,6 @@ gboolean player1_first_move = FALSE;
 gboolean cpu_first_move = FALSE;
 
 void button_click_callback(GtkWidget *widget, gpointer ptr) {
-
     gtk_widget_set_sensitive(widget, FALSE);
     apply_turn_player(widget, ptr);
     if (!game_finished) {
@@ -86,7 +85,6 @@ void apply_widget_position_on_matrix(GtkWidget *widget) {
 }
 
 gboolean apply_turn_cpu(gpointer ptr) {
-
     if (sel_mode == 2) {
         cpu_move();
     }
@@ -144,7 +142,6 @@ void game_result(gpointer ptr, int result) {
 }
 
 int check_win(char symbol) {
-
     // Check rows
     for (int i = 0; i < 3; i++) {
         if (matrix[i][0] == symbol && matrix[i][1] == symbol && matrix[i][2] == symbol) {
@@ -183,7 +180,6 @@ void clean_matrix() {
     }
 }
 
-// Callback function to change the label text
 gboolean game_start_text(gpointer user_data) {
     // Retrieve the label widget from the user_data
     GtkWidget *label = GTK_WIDGET(user_data);
@@ -255,6 +251,30 @@ void cpu_move() {
     apply_matrix_position_on_widget(row, col);
 }
 
+void cpu_move_impossible(char player_symbol) {
+    int best_score = -100000;
+    int row = -1;
+    int col = -1;
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (matrix[i][j] == '\0') {
+                matrix[i][j] = player_symbol;
+                int move_score = minimax(player_symbol, 0, FALSE);
+                matrix[i][j] = '\0';
+                if (move_score > best_score)
+                {
+                    row = i;
+                    col = j;
+                    best_score = move_score;
+                }
+            }
+        }
+    }
+    matrix[row][col] = player_symbol;
+    apply_matrix_position_on_widget(row, col);
+}
+
 int minimax(char player_symbol, int depth, gboolean is_maximizing) {
     char opponent_symbol = (player_symbol == 'X') ? 'O' : 'X';
     int result = 0;
@@ -285,30 +305,6 @@ int minimax(char player_symbol, int depth, gboolean is_maximizing) {
         }
     }
     return best_score;
-}
-
-void cpu_move_impossible(char player_symbol) {
-    int best_score = -100000;
-    int row = -1;
-    int col = -1;
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (matrix[i][j] == '\0') {
-                matrix[i][j] = player_symbol;
-                int move_score = minimax(player_symbol, 0, FALSE);
-                matrix[i][j] = '\0';
-                if (move_score > best_score)
-                {
-                    row = i;
-                    col = j;
-                    best_score = move_score;
-                }
-            }
-        }
-    }
-    matrix[row][col] = player_symbol;
-    apply_matrix_position_on_widget(row, col);
 }
 
 void apply_matrix_position_on_widget(int i, int j) {
