@@ -1,13 +1,60 @@
 #include "window.h"
 #include "game_logic.h"
+#include "variables.h"
 
 int window_x = DEFAULT_X;
 int window_y = DEFAULT_Y;
 int width_x = DEFAULT_W;
 int height_y = DEFAULT_H;
+char current_symbol = 'X';
+int X = 0;
+int O = 0;
+char matrix[3][3];
+
+GtkWidget *window;
+GtkWidget *exit_button;
+GtkWidget *score_lbl;
+GtkWidget *game_grid;
+GtkWidget *restart_btn;
+GtkWidget *player1_btn;
+GtkWidget *cpu_btn;
+GtkWidget *turn_lbl;
+
+gchar *current_turn_string;
+gchar *start_game_string;
+
+HashTable *table;
+
+GtkWidget *main_grid;
+GtkWidget *btn11;
+GtkWidget *btn12;
+GtkWidget *btn13;
+GtkWidget *btn21;
+GtkWidget *btn22;
+GtkWidget *btn23;
+GtkWidget *btn31;
+GtkWidget *btn32;
+GtkWidget *btn33;
+
+gulong window_handler_id;
+gulong exit_button_handler_id;
+gulong restart_button_handler_id;
+gulong btn11_handler_id;
+gulong btn12_handler_id;
+gulong btn13_handler_id;
+gulong btn21_handler_id;
+gulong btn22_handler_id;
+gulong btn23_handler_id;
+gulong btn31_handler_id;
+gulong btn32_handler_id;
+gulong btn33_handler_id;
+gulong player1_btn_handler_id;
+gulong cpu_btn_handler_id;
+
 
 void create_game_window() {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_NONE);
     gtk_window_move(GTK_WINDOW(window), window_x, window_y+28);
     gtk_window_resize(GTK_WINDOW(window), width_x, height_y);

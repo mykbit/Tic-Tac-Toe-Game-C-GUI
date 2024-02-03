@@ -1,5 +1,9 @@
 #include "start_game.h"
+#include "variables.h"
 #include "window.h"
+
+char input[MAX_LENGTH];
+int sel_mode;
 
 void mode_select() {
     switch(sel_mode) {

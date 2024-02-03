@@ -1,6 +1,5 @@
 .cache
 docs
-build
 .vscode
 ._*
 .DS_Store

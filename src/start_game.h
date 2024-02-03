@@ -4,9 +4,6 @@
 
 #define MAX_LENGTH 256
 
-extern int sel_mode;
-char input[MAX_LENGTH];
-
 // Selects the game mode based on the user input
 void mode_select();
 

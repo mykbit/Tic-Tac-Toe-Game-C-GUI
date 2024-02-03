@@ -1,6 +1,6 @@
 #include "game_logic.h"
+#include "variables.h"
 
-char current_symbol = 'X';
 gboolean game_finished = FALSE;
 gboolean player1_first_move = FALSE;
 gboolean cpu_first_move = FALSE;
@@ -193,9 +193,9 @@ gboolean game_start_text(gpointer user_data) {
     return FALSE;
 }
 
-void draw_score(gpointer ptr, int X, int O) {
+void draw_score(gpointer ptr, int score_X, int score_O) {
     char buffer[30];
-    sprintf(buffer, "Score\n %d : %d", X, O);
+    sprintf(buffer, "Score\n %d : %d", score_X, score_O);
     gtk_label_set_text(GTK_LABEL(ptr), buffer);
 }
 

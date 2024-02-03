@@ -2,29 +2,23 @@
 #include "button_hashtable.h"
 #include <math.h>
 
-int sel_mode;
-int X;
-int O;
-char matrix[3][3];
-extern char current_symbol;
+extern gboolean game_finished;
+extern gboolean player1_first_move;
+extern gboolean cpu_first_move;
+extern gboolean cpu_turn_flag;
 
-gboolean game_finished;
-gboolean player1_first_move;
-gboolean cpu_first_move;
-gboolean cpu_turn_flag;
+extern HashTable *table;
 
-HashTable *table;
-
-GtkWidget *window;
-GtkWidget *exit_button;
-GtkWidget *score_lbl;
-GtkWidget *game_grid;
-GtkWidget *restart_btn;
-GtkWidget *player1_btn;
-GtkWidget *cpu_btn;
-GtkWidget *turn_lbl;
-gchar *current_turn_string;
-gchar *start_game_string;
+extern GtkWidget *window;
+extern GtkWidget *exit_button;
+extern GtkWidget *score_lbl;
+extern GtkWidget *game_grid;
+extern GtkWidget *restart_btn;
+extern GtkWidget *player1_btn;
+extern GtkWidget *cpu_btn;
+extern GtkWidget *turn_lbl;
+extern gchar *current_turn_string;
+extern gchar *start_game_string;
 
 /*
     Reacts to a game grid button click by a player. Deactivates the button and calls the function to apply the turn.
