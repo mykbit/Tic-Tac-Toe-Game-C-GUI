@@ -13,12 +13,30 @@ This mode is identical to the Player vs Computer mode, except that the computer 
 
 ## Setup
 ```
-brew install gtk+3
+brew install gtk+3 && brew install pkg-config
 ```
-## Build necessary flags
+## Build and Interact
+
+1. Navigate to the project directory:
 ```
-pkg-config --cflags --libs gtk+-3.0
+cd path/to/Tic-Tac-Toe-Game-C-GUI
 ```
+
+2. Build the game:
+```
+gcc -o build/tic-tac-toe src/main.c src/start_game.c src/window.c src/game_logic.c src/button_hashtable.c `pkg-config --cflags --libs gtk+-3.0`
+```
+
+3. Run the game:
+```
+./build/tic-tac-toe
+```
+
+4. Choose the game mode.
+
+5. Open the game window and play!
+
+
 ## Comments
 You can find comments to the code in .h files.
 ## Gameplay
