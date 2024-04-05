@@ -24,7 +24,7 @@ cd path/to/Tic-Tac-Toe-Game-C-GUI
 
 2. Build the game:
 ```
-gcc -o build/tic-tac-toe src/main.c src/start_game.c src/window.c src/game_logic.c src/button_hashtable.c `pkg-config --cflags --libs gtk+-3.0`
+make all
 ```
 
 3. Run the game:

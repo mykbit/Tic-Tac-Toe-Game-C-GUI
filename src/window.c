@@ -56,7 +56,7 @@ void create_game_window() {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_NONE);
-    gtk_window_move(GTK_WINDOW(window), window_x, window_y+28);
+    gtk_window_move(GTK_WINDOW(window), window_x, window_y);
     gtk_window_resize(GTK_WINDOW(window), width_x, height_y);
     gtk_window_set_title(GTK_WINDOW(window), "Tic Tac Toe");
     window_handler_id = g_signal_connect(window, "delete_event", G_CALLBACK(quit_app), NULL);
